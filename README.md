@@ -7,14 +7,16 @@
 
 ## 目标
 - [x] 实时编译less，转成wxss
-- [x] eslint
+- [x] ESLint代码检查
 - [x] 图片压缩（可以添加白名单不压缩）
 - [ ] 删除文件的优化（目前的复制是覆盖，watch不到删除）
-- [ ] 配置文件路径别名 `alisa`
-- [ ] 自适应 `px2rpx`
+- [ ] 配置文件路径别名 `alias`
+- [x] 自适应 `px2rpx`
 - [ ] 环境变量
 - [ ] 自动切换接口环境
 - [ ] `npm run` 命令代替 `gulp` 命令
+- [ ] webview
+- [ ] 使用命令行快速创建page、template和component
 - [ ] 完善项目功能...
 
 ## 参考
@@ -25,6 +27,7 @@
 - https://github.com/YangQiGitHub/wx-miniprogram-boilerplate
 - https://www.bilibili.com/video/BV1yK4y1e7tS?from=search&seid=16155885605994342562
 - https://www.cnblogs.com/kevoin/p/9890100.html
+- https://www.cnblogs.com/fozero/p/8994464.html
 
 ## 备注
 Code generators to speed up development
