@@ -1,30 +1,29 @@
 // 初始化模块
-const gulp = require("gulp");
-const less = require("gulp-less");
+const gulp = require('gulp');
+const less = require('gulp-less');
 const del = require('del');
 const gulpif = require('gulp-if');
-const rename = require("gulp-rename");
+const rename = require('gulp-rename');
 const eslint = require('gulp-eslint');
 const imagemin = require('gulp-imagemin');
 const px2rpx = require('gulp-px2rpx');
 
-// 基础路径（工作路径、产出路径）
+// 定义一些路径
 const srcPath = './src/**';
+const distPath = './dist/';
 const filePath = {
-    wxmlFiles: [`${srcPath}/*.wxml`],
-    lessFiles: [`${srcPath}/*.less`, `${srcPath}/*.wxss`],
-    jsFiles: [`${srcPath}/*.js`, `!./src/env/*.js`],
-    jsonFiles: [`${srcPath}/*.json`],
-    imgFiles: [`${srcPath}/images/**/*.*`]
+    justCopyFiles: [`${srcPath}/*.wxml`, `${srcPath}/*.json`], // 啥也不干，直接复制
+    lessFiles: [`${srcPath}/*.less`, `${srcPath}/*.wxss`], // less转成wxss、px转rpx
+    jsFiles: [`${srcPath}/*.js`, `!./src/env/*.js`], // js加个eslint验证
+    imgFiles: [`${srcPath}/images/**/*.*`] // 图片压缩一下
 }
-const distPath = './dist/'; // 产出路径
 
-// 编译wxml文件
-const wxml = () => {
-    return gulp.src(filePath.wxmlFiles, { since: gulp.lastRun(wxml) })
+// 啥也不干，直接复制
+const justCopy = () => {
+    return gulp.src(filePath.justCopyFiles, { since: gulp.lastRun(justCopy) })
         .pipe(gulp.dest(distPath));
 };
-gulp.task(wxml);
+gulp.task(justCopy);
 
 // 编译less文件
 const isLess = (file) => {
@@ -52,13 +51,6 @@ const js = () => {
 };
 gulp.task(js);
 
-// 编译json文件
-const json = () => {
-    return gulp.src(filePath.jsonFiles, { since: gulp.lastRun(json) })
-        .pipe(gulp.dest(distPath));
-};
-gulp.task(json);
-
 // 编译图片
 const img = () => {
     return gulp.src(filePath.imgFiles, { since: gulp.lastRun(img) })
@@ -75,18 +67,17 @@ gulp.task('clean', done => {
 
 // 监听文件
 gulp.task('watch', () => {
-    gulp.watch(filePath.wxmlFiles, wxml);
+    gulp.watch(filePath.justCopyFiles, justCopy);
     gulp.watch(filePath.lessFiles, compileLess);
     gulp.watch(filePath.jsFiles, js);
-    gulp.watch(filePath.jsonFiles, json);
     gulp.watch(filePath.imgFiles, img);
-});
+})
 
 // development环境
 gulp.task('dev',
     gulp.series(
         'clean',
-        gulp.parallel('wxml', 'compileLess', 'js', 'json', 'img'),
+        gulp.parallel('justCopy', 'compileLess', 'js', 'img'),
         'watch'
     )
 )
