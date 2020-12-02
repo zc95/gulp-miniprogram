@@ -7,6 +7,7 @@ const rename = require('gulp-rename');
 const eslint = require('gulp-eslint');
 const imagemin = require('gulp-imagemin');
 const px2rpx = require('gulp-px2rpx');
+const aliases = require('gulp-wechat-weapp-src-alisa');
 
 // 定义一些路径
 const srcPath = './src/**';
@@ -46,6 +47,9 @@ gulp.task(compileLess);
 const js = () => {
     return gulp.src(filePath.jsFiles, { since: gulp.lastRun(js) })
         .pipe(eslint())
+        .pipe(aliases({
+            '@': "./src",
+        }))
         .pipe(eslint.format())
         .pipe(gulp.dest(distPath));
 };
