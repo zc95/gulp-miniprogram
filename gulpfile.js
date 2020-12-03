@@ -73,6 +73,13 @@ function dealJson() {
         .pipe(gulp.dest(distPath));
 }
 
+// 延迟500后，auto监听编写的代码的改变（实时执行编译小程序代码）
+function depleyPages(cb) {
+    setTimeout(function(){
+        cb()
+    }, 500);
+}
+
 // 清除dist目录
 function cleanDist(cb) {
     pump([
@@ -95,6 +102,7 @@ gulp.task('dev',
     gulp.series(
         cleanDist,
         gulp.parallel(dealWxml, dealLess, dealJs, dealImg, dealJson),
+        depleyPages,
         watchFiles
     )
 )
