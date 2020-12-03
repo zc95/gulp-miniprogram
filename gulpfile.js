@@ -2,38 +2,39 @@
 const gulp = require('gulp');
 const less = require('gulp-less');
 const del = require('del');
-const gulpif = require('gulp-if');
-const rename = require('gulp-rename');
+const clean = require('gulp-clean'); // 清除文件夹内容模块
+const gulpif = require('gulp-if'); // gulp管道中判断的模块
+const rename = require('gulp-rename'); // 重命名模块
 const eslint = require('gulp-eslint');
-const imagemin = require('gulp-imagemin');
+const imagemin = require('gulp-imagemin'); // 压缩图片模块
 const px2rpx = require('gulp-px2rpx');
-const aliases = require('gulp-wechat-weapp-src-alisa');
+const aliases = require('gulp-wechat-weapp-src-alisa'); // 别名模块
+const pump = require('pump');
 
 // 定义一些路径
-const srcPath = './src/**';
-const distPath = './dist/';
+const srcPath = 'src/**';
+const distPath = 'dist/';
 const filePath = {
     wxmlFiles: [`${srcPath}/*.wxml`], // 直接复制 wxml
     jsonFiles: [`${srcPath}/*.json`], // 直接复制 json
     lessFiles: [`${srcPath}/*.less`, `${srcPath}/*.wxss`], // less转成wxss、px转rpx
     jsFiles: [`${srcPath}/*.js`, `!./src/env/*.js`], // js加个eslint验证
-    imgFiles: [`${srcPath}/images/**/*.*`] // 图片压缩一下
+    imgFiles: [`${srcPath}/assets/images/**/*.*`] // 图片压缩一下
 }
 
 // 直接复制 wxml
-const wxml = () => {
-    return gulp.src(filePath.wxmlFiles, { since: gulp.lastRun(wxml) })
-        .pipe(aliases({ '@': 'src' }))
-        .pipe(gulp.dest(distPath));
-};
-gulp.task(wxml);
+function dealWxml() {
+    return gulp.src(filePath.wxmlFiles, {base: 'src'})
+    .pipe(aliases({ '@': 'src' }))
+    .pipe(gulp.dest(distPath));
+}
 
 // 编译less文件
-const isLess = (file) => {
-    return Object.is(file.extname, '.less');
-};
-const compileLess = () => {
-    return gulp.src(filePath.lessFiles, { since: gulp.lastRun(compileLess) })
+function dealLess() {
+    const isLess = (file) => {
+        return Object.is(file.extname, '.less');
+    };
+    return gulp.src(filePath.lessFiles, {base: 'src'})
         .pipe(aliases({ '@': 'src' }))
         .pipe(gulpif(isLess, less()))
         .pipe(px2rpx({
@@ -43,54 +44,57 @@ const compileLess = () => {
         }))
         .pipe(rename({ extname: '.wxss' }))
         .pipe(gulp.dest(distPath));
-};
-gulp.task(compileLess);
+}
 
 // 编译js文件
-const js = () => {
-    return gulp.src(filePath.jsFiles, { since: gulp.lastRun(js) })
+function dealJs() {
+    return gulp.src(filePath.jsFiles, {base: 'src'})
         .pipe(eslint())
         .pipe(aliases({ '@': 'src' }))
         .pipe(eslint.format())
         .pipe(gulp.dest(distPath));
-};
-gulp.task(js);
+}
 
-// 编译图片
-const img = () => {
-    return gulp.src(filePath.imgFiles, { since: gulp.lastRun(img) })
-        .pipe(imagemin())
-        .pipe(gulp.dest(distPath))
-};
-gulp.task(img);
+// 压缩图片
+function dealImg() {
+    return gulp.src(filePath.imgFiles, {base: 'src'})
+    .pipe(imagemin({
+        interlaced: true, //隔行扫描压缩jqp图片
+        optimizationLevel: 5, //0-7
+        progressive: true, //无损压缩jpg
+        multipass: true //多次优化svg直到最优
+    }))
+    .pipe(gulp.dest(distPath))
+}
 
 // 直接复制 json
-const json = () => {
-    return gulp.src(filePath.jsonFiles, { since: gulp.lastRun(json) })
+function dealJson() {
+    return gulp.src(filePath.jsonFiles, {base: 'src'})
         .pipe(gulp.dest(distPath));
-};
-gulp.task(json);
+}
 
-// 清除build目录下的所有文件
-gulp.task('clean', done => {
-    del.sync(['dist/**/*']);
-    done();
-});
+// 清除dist目录
+function cleanDist(cb) {
+    pump([
+        gulp.src('dist',{allowEmpty: true}),
+        clean()
+    ], cb)
+}
 
 // 监听文件
-gulp.task('watch', () => {
-    gulp.watch(filePath.wxmlFiles, wxml);
-    gulp.watch(filePath.lessFiles, compileLess);
-    gulp.watch(filePath.jsFiles, js);
-    gulp.watch(filePath.imgFiles, img);
-    gulp.watch(filePath.jsonFiles, json);
-})
+function watchFiles() {
+    gulp.watch(filePath.wxmlFiles, dealWxml);
+    gulp.watch(filePath.lessFiles, dealLess);
+    gulp.watch(filePath.jsFiles, dealJs);
+    gulp.watch(filePath.imgFiles, dealImg);
+    gulp.watch(filePath.jsonFiles, dealJson);
+}
 
 // development环境
 gulp.task('dev',
     gulp.series(
-        'clean',
-        gulp.parallel('wxml', 'compileLess', 'js', 'img', 'json'),
-        'watch'
+        cleanDist,
+        gulp.parallel(dealWxml, dealLess, dealJs, dealImg, dealJson),
+        watchFiles
     )
 )
