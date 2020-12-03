@@ -56,13 +56,6 @@ const js = () => {
 };
 gulp.task(js);
 
-// 直接复制 json
-const json = () => {
-    return gulp.src(filePath.jsonFiles, { since: gulp.lastRun(json) })
-        .pipe(gulp.dest(distPath));
-};
-gulp.task(json);
-
 // 编译图片
 const img = () => {
     return gulp.src(filePath.imgFiles, { since: gulp.lastRun(img) })
@@ -70,6 +63,13 @@ const img = () => {
         .pipe(gulp.dest(distPath))
 };
 gulp.task(img);
+
+// 直接复制 json
+const json = () => {
+    return gulp.src(filePath.jsonFiles, { since: gulp.lastRun(json) })
+        .pipe(gulp.dest(distPath));
+};
+gulp.task(json);
 
 // 清除build目录下的所有文件
 gulp.task('clean', done => {
