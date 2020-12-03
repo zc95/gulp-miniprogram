@@ -16,6 +16,8 @@
 - [ ] 自动切换接口环境
 - [ ] `npm run` 命令代替 `gulp` 命令
 - [ ] webview
+- [ ] request封装
+- [ ] abort取消请求
 - [ ] 使用命令行快速创建page、template和component
 - [ ] 完善项目功能...
 
