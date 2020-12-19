@@ -10,6 +10,7 @@ const imagemin = require('gulp-imagemin'); // 压缩图片模块
 const px2rpx = require('gulp-px2rpx');
 const aliases = require('gulp-wechat-weapp-src-alisa'); // 别名模块
 const pump = require('pump');
+const preprocess = require("gulp-preprocess");
 
 // 定义一些路径
 const srcPath = 'src/**';
@@ -18,7 +19,7 @@ const filePath = {
     wxmlFiles: [`${srcPath}/*.wxml`], // 直接复制 wxml
     jsonFiles: [`${srcPath}/*.json`], // 直接复制 json
     lessFiles: [`${srcPath}/*.less`, `${srcPath}/*.wxss`], // less转成wxss、px转rpx
-    jsFiles: [`${srcPath}/*.js`, `!./src/env/*.js`], // js加个eslint验证
+    jsFiles: [`${srcPath}/*.js`, `!src/config/*.js`], // js加个eslint验证
     imgFiles: [`${srcPath}/assets/images/**/*.*`] // 图片压缩一下
 }
 
@@ -73,6 +74,17 @@ function dealJson() {
         .pipe(gulp.dest(distPath));
 }
 
+// 预设置环境变量
+function environment() {
+    return gulp.src(['src/config/environment.js'], {base: 'src'})
+    .pipe(preprocess({
+        context: {
+            NODE_ENV: process.env.NODE_ENV || 'development',
+          },
+    }))
+    .pipe(gulp.dest(distPath));
+}
+
 // 延迟500后，auto监听编写的代码的改变（实时执行编译小程序代码）
 function depleyPages(cb) {
     setTimeout(function(){
@@ -101,6 +113,7 @@ function watchFiles() {
 gulp.task('dev',
     gulp.series(
         cleanDist,
+        environment,
         gulp.parallel(dealWxml, dealLess, dealJs, dealImg, dealJson),
         depleyPages,
         watchFiles
