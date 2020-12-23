@@ -22,14 +22,14 @@ const filePath = {
 
 // 直接复制 wxml
 function dealWxml() {
-    return gulp.src(filePath.wxmlFiles, {base: 'src'})
+    return gulp.src(filePath.wxmlFiles)
     .pipe(aliases({ '@': 'src' }))
     .pipe(gulp.dest(distPath));
 }
 
 // 直接复制 json
 function dealJson() {
-  return gulp.src(filePath.jsonFiles, {base: 'src'})
+  return gulp.src(filePath.jsonFiles)
       .pipe(gulp.dest(distPath));
 }
 
@@ -38,7 +38,7 @@ function dealLess() {
     const isLess = (file) => {
         return Object.is(file.extname, '.less');
     };
-    return gulp.src(filePath.lessFiles, {base: 'src'})
+    return gulp.src(filePath.lessFiles)
         .pipe(aliases({ '@': 'src' }))
         .pipe(gulpif(isLess, less()))
         .pipe(px2rpx({
@@ -52,7 +52,7 @@ function dealLess() {
 
 // 编译js文件
 function dealJs() {
-    return gulp.src(filePath.jsFiles, {base: 'src'})
+    return gulp.src(filePath.jsFiles)
         .pipe(eslint())
         .pipe(aliases({ '@': 'src' }))
         .pipe(eslint.format())
@@ -61,7 +61,7 @@ function dealJs() {
 
 // 压缩图片
 function dealImg() {
-    return gulp.src(filePath.imgFiles, {base: 'src'})
+    return gulp.src(filePath.imgFiles)
     .pipe(imagemin({
         interlaced: true, //隔行扫描压缩jqp图片
         optimizationLevel: 5, //0-7
