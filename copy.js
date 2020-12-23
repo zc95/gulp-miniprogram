@@ -13,11 +13,11 @@ const aliases = require('gulp-wechat-weapp-src-alisa'); // 别名模块
 const srcPath = 'src/**';
 const distPath = 'dist/';
 const filePath = {
-    wxmlFiles: [`${srcPath}/*.wxml`], // 直接复制 wxml
-    jsonFiles: [`${srcPath}/*.json`], // 直接复制 json
-    lessFiles: [`${srcPath}/*.less`, `${srcPath}/*.wxss`], // less转成wxss、px转rpx
-    jsFiles: [`${srcPath}/*.js`], // js加个eslint验证、路径别名
-    imgFiles: [`${srcPath}/assets/images/**/*.*`] // 图片压缩一下
+    wxmlFiles: [`${srcPath}/*.wxml`],
+    jsonFiles: [`${srcPath}/*.json`],
+    lessFiles: [`${srcPath}/*.less`, `${srcPath}/*.wxss`],
+    jsFiles: [`${srcPath}/*.js`],
+    imgFiles: [`${srcPath}/assets/images/**/*.*`]
 }
 
 // 直接复制 wxml

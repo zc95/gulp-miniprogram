@@ -5,11 +5,11 @@ const gulp = require('gulp');
 const srcPath = 'src/**';
 const distPath = 'dist/';
 const filePath = {
-    wxmlFiles: [], // 直接复制 wxml
-    jsonFiles: [], // 直接复制 json
-    lessFiles: [], // less转成wxss、px转rpx
-    jsFiles: [], // js加个eslint验证、路径别名
-    imgFiles: [] // 图片压缩一下
+    wxmlFiles: [],
+    jsonFiles: [],
+    lessFiles: [],
+    jsFiles: [],
+    imgFiles: []
 }
 
 // 直接复制 wxml
