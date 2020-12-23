@@ -28,6 +28,12 @@ function dealWxml() {
     .pipe(gulp.dest(distPath));
 }
 
+// 直接复制 json
+function dealJson() {
+  return gulp.src(filePath.jsonFiles, {base: 'src'})
+      .pipe(gulp.dest(distPath));
+}
+
 // 编译less文件
 function dealLess() {
     const isLess = (file) => {
@@ -66,30 +72,6 @@ function dealImg() {
     .pipe(gulp.dest(distPath))
 }
 
-// 直接复制 json
-function dealJson() {
-    return gulp.src(filePath.jsonFiles, {base: 'src'})
-        .pipe(gulp.dest(distPath));
-}
-
-// 预设置环境变量
-function environment() {
-    return gulp.src(['src/config/environment.js'], {base: 'src'})
-    .pipe(preprocess({
-        context: {
-            NODE_ENV: process.env.NODE_ENV || 'development',
-          },
-    }))
-    .pipe(gulp.dest(distPath));
-}
-
-// 延迟500后，auto监听编写的代码的改变（实时执行编译小程序代码）
-function depleyPages(cb) {
-    setTimeout(function(){
-        cb()
-    }, 500);
-}
-
 // 清除dist目录
 function cleanDist(cb) {
   return del('dist');
@@ -104,13 +86,11 @@ function watchFiles() {
     gulp.watch(filePath.jsonFiles, dealJson);
 }
 
-// development环境
-gulp.task('dev',
+// 默认
+gulp.task('default',
     gulp.series(
         cleanDist,
-        environment,
         gulp.parallel(dealWxml, dealLess, dealJs, dealImg, dealJson),
-        depleyPages,
         watchFiles
     )
 )
