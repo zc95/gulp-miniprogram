@@ -2,8 +2,8 @@
 const gulp = require('gulp');
 
 // 定义一些路径
-const srcPath = 'src/**';
-const distPath = 'dist/';
+const srcPath = '';
+const distPath = '';
 const filePath = {
     wxmlFiles: [],
     jsonFiles: [],
