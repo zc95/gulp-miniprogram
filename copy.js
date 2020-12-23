@@ -16,7 +16,7 @@ const filePath = {
     wxmlFiles: [`${srcPath}/*.wxml`], // 直接复制 wxml
     jsonFiles: [`${srcPath}/*.json`], // 直接复制 json
     lessFiles: [`${srcPath}/*.less`, `${srcPath}/*.wxss`], // less转成wxss、px转rpx
-    jsFiles: [`${srcPath}/*.js`], // js加个eslint验证
+    jsFiles: [`${srcPath}/*.js`], // js加个eslint验证、路径别名
     imgFiles: [`${srcPath}/assets/images/**/*.*`] // 图片压缩一下
 }
 
@@ -50,7 +50,7 @@ function dealLess() {
         .pipe(gulp.dest(distPath));
 }
 
-// 编译js文件
+// js加个eslint验证、路径别名
 function dealJs() {
     return gulp.src(filePath.jsFiles)
         .pipe(eslint())

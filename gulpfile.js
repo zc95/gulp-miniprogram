@@ -8,7 +8,7 @@ const filePath = {
     wxmlFiles: [], // 直接复制 wxml
     jsonFiles: [], // 直接复制 json
     lessFiles: [], // less转成wxss、px转rpx
-    jsFiles: [], // js加个eslint验证
+    jsFiles: [], // js加个eslint验证、路径别名
     imgFiles: [] // 图片压缩一下
 }
 
@@ -27,7 +27,7 @@ function dealLess() {
     
 }
 
-// 编译js文件
+// js加个eslint验证、路径别名
 function dealJs() {
     
 }
