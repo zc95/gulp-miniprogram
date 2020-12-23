@@ -2,7 +2,6 @@
 const gulp = require('gulp');
 const less = require('gulp-less'); // 编译less
 const del = require('del'); // 删除
-const gulpif = require('gulp-if'); // gulp管道中判断的模块
 const rename = require('gulp-rename'); // 重命名模块
 const eslint = require('gulp-eslint'); // eslint
 const imagemin = require('gulp-imagemin'); // 压缩图片模块
@@ -10,13 +9,13 @@ const px2rpx = require('gulp-px2rpx'); // px转rpx
 const aliases = require('gulp-wechat-weapp-src-alisa'); // 别名模块
 
 // 定义一些路径
-const srcPath = 'src/**';
+const srcPath = 'src/**/';
 const distPath = 'dist/';
 const filePath = {
-    wxmlFiles: [`${srcPath}/*.wxml`],
-    jsonFiles: [`${srcPath}/*.json`],
-    lessFiles: [`${srcPath}/*.less`, `${srcPath}/*.wxss`],
-    jsFiles: [`${srcPath}/*.js`],
+    wxmlFiles: [`${srcPath}*.wxml`],
+    jsonFiles: [`${srcPath}*.json`],
+    lessFiles: [`${srcPath}*.less`, `${srcPath}*.wxss`],
+    jsFiles: [`${srcPath}*.js`],
     imgFiles: [`${srcPath}/assets/images/**/*.*`]
 }
 
@@ -35,12 +34,8 @@ function dealJson() {
 
 // 编译less文件
 function dealLess() {
-    const isLess = (file) => {
-        return Object.is(file.extname, '.less');
-    };
     return gulp.src(filePath.lessFiles)
         .pipe(aliases({ '@': 'src' }))
-        .pipe(gulpif(isLess, less()))
         .pipe(px2rpx({
             screenWidth: 375,
             wxappScreenWidth: 750,

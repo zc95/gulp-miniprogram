@@ -1,7 +1,7 @@
 //index.js
 //获取应用实例
 const app = getApp()
-import { formatNumber } from '@/utils/index'
+// import { formatNumber } from '@/utils/index'
 Page({
   onLoad: function () {
     // const user = "小明";
