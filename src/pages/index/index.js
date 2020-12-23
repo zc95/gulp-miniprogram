@@ -4,7 +4,7 @@ const app = getApp()
 // import { formatNumber } from '@/utils/index'
 Page({
   onLoad: function () {
-    const user = "小明";
-    user = "小红";
+    // const user = "小明";
+    // user = "小红";
   }
 })
