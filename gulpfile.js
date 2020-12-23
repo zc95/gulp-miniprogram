@@ -2,14 +2,12 @@
 const gulp = require('gulp');
 const less = require('gulp-less');
 const del = require('del');
-const clean = require('gulp-clean'); // 清除文件夹内容模块
 const gulpif = require('gulp-if'); // gulp管道中判断的模块
 const rename = require('gulp-rename'); // 重命名模块
 const eslint = require('gulp-eslint');
 const imagemin = require('gulp-imagemin'); // 压缩图片模块
 const px2rpx = require('gulp-px2rpx');
 const aliases = require('gulp-wechat-weapp-src-alisa'); // 别名模块
-const pump = require('pump');
 const preprocess = require("gulp-preprocess");
 
 // 定义一些路径
@@ -94,10 +92,7 @@ function depleyPages(cb) {
 
 // 清除dist目录
 function cleanDist(cb) {
-    pump([
-        gulp.src('dist',{allowEmpty: true}),
-        clean()
-    ], cb)
+  return del('dist');
 }
 
 // 监听文件

@@ -9,6 +9,7 @@
   "author": "zc",
   "license": "ISC",
   "devDependencies": {
+    "del": "^6.0.0",
     "gulp": "^4.0.2",
     "gulp-clean": "^0.4.0",
     "gulp-eslint": "^6.0.0",
@@ -18,7 +19,6 @@
     "gulp-preprocess": "^3.0.3",
     "gulp-px2rpx": "^0.2.2",
     "gulp-rename": "^2.0.0",
-    "gulp-wechat-weapp-src-alisa": "^1.0.4",
-    "pump": "^3.0.0"
+    "gulp-wechat-weapp-src-alisa": "^1.0.4"
   }
 }
