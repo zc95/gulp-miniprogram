@@ -1,12 +1,5 @@
 // 初始化模块
 const gulp = require('gulp');
-const less = require('gulp-less'); // 编译less
-const del = require('del'); // 删除
-const rename = require('gulp-rename'); // 重命名模块
-const eslint = require('gulp-eslint'); // eslint
-const imagemin = require('gulp-imagemin'); // 压缩图片模块
-const px2rpx = require('gulp-px2rpx'); // px转rpx
-const aliases = require('gulp-wechat-weapp-src-alisa'); // 别名模块
 
 // 定义一些路径
 const srcPath = '';
