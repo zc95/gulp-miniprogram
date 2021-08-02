@@ -1,3 +1,6 @@
+## 更新
+别名模块好像有了新的选择，gulp-miniprogram-path-alias，暂时还没时间去看。
+
 ## 为什么不选第三方框架
 例如 `WePY`、`Mpvue`、`uni-app`、`Taro`、`Mpx`，这些框架bug层出不穷，开发者频繁跑路、放弃更新😂
 
